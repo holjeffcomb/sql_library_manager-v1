@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  each book in books 
+    article 
+      h3= `${book.title} - ${book.author}`
+
+
