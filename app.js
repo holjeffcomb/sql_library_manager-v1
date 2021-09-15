@@ -34,23 +34,33 @@ app.use('/users', usersRouter);
   }
 })();
 
-// sync model with databasa
+// sync model with database
 sequelize.sync();
 
-// catch 404 and forward to error handler
+// Error handler to handle page not found issues
 app.use(function(req, res, next) {
-  next(createError(404));
+  const err  = new Error()
+  err.message = 'Oops! Page Not Found'
+  err.status = 404
+  console.log('404 page not found')
+  res.render('page-not-found', {err})
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Global error handler for all other errors
+app.use(function(err, req, res, next){
+  res.locals.error = err
+  if (!err.status) {
+    err.status = 500
+    err.message = 'Server Error'
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+    console.log('server error')
+    console.log(err.status, err.message)
+
+    res.render('error', {err})
+  }else{
+    res.status(err.status || 500)
+    res.render('error', {err})
+  }
+})
 
 module.exports = app;
