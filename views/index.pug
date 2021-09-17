@@ -2,20 +2,32 @@ extends layout
 
 block content
   h1 Books
-  p
-    a.button(href='/books/new') Create New Book
+  p 
+    a(class="button" href="/books/new") Add Book to Library
+    form.search(action='/books/search', method='get')
+      input(name='search' type='text' placeholder='Search...')
+      button(type='submit' value="Search")
+        img(src="https://img.icons8.com/ios-glyphs/30/000000/search--v2.png" height="75%" width="75%")
+      if search 
+        button(href='/') Back to Library
+
   table
-    thead
-      tr
+    thread 
+      tr 
         th Title
-        th Author
-        th Genre
+        th Author 
+        th Genre 
         th Year
-    tbody
+      
+    tbody 
       each book in books 
-        tr 
+        tr
           td 
-            a(href=`/books/${book.id}`)= book.title
-            td= book.author 
-            td= book.genre 
-            td= book.year 
+            a(href='/books/' +book.id) #{book.title}
+          td #{book.author}
+          td #{book.genre} 
+          td #{book.year}
+  ul.pagination
+    while links <= pageCount
+      li
+       a(class='button' href=`/books/?page=${links}`)= links++

@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= Books
+  p 
+    a(class="button" href="/books/new") Create New Book
+    form.search(action='/books/search', method='get')
+      input(name='search' type='text' placeholder='Search...')
+      button(type='submit' value="Search")
+        img(src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png" height="75%" width="75%")
+        
+      button(href='/books') Back to Library
+
+  h2 Search "#{search}" not found in library 
+  p Try a new search or select "Back to Library" to return to full list
+  img.round(src='/images/sad-robot.JPG')
