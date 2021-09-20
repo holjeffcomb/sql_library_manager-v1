@@ -37,15 +37,17 @@ sequelize.sync();
 
 // Error handler to handle page not found issues
 app.use(function(req, res, next) {
-  const err  = new Error()
-  err.message = 'Oops! Page Not Found'
-  err.status = 404
-  console.log('404 page not found')
-  res.render('page-not-found', {err})
+  console.log('404 handler fired');
+  const error  = new Error()
+  error.message = 'Oops! Page Not Found'
+  error.status = 404
+  res.render('page-not-found', {error})
+  next(error);
 });
 
 // Global error handler for all other errors
 app.use(function(err, req, res, next){
+  console.log('global handler fired.');
   res.locals.error = err
   if (!err.status) {
     err.status = 500
@@ -54,10 +56,10 @@ app.use(function(err, req, res, next){
     console.log('server error')
     console.log(err.status, err.message)
 
-    res.render('error', {err})
+    res.render('page-not-found', {error: err})
   }else{
     res.status(err.status || 500)
-    res.render('error', {err})
+    res.render('page-not-found', {error: err})
   }
 })
 
